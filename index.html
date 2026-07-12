@@ -6,406 +6,374 @@
 <title>TO DO LIST</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#ECEEE9;
+    --bg1:#FDE9EF;
+    --bg2:#FCEFEA;
+    --bg3:#FDE7DE;
     --panel:#FFFFFF;
-    --ink:#1E2B28;
-    --ink-muted:#5B6B66;
-    --teal:#0E6E63;
-    --teal-dark:#0A4F47;
-    --amber:#E2A33B;
-    --red:#B23A2E;
-    --green:#3D8361;
-    --border:#D7DCD3;
-    --border-strong:#BFC7BC;
-    --shadow: 0 2px 0 rgba(30,43,40,0.06), 0 8px 24px -12px rgba(30,43,40,0.18);
-    --radius:14px;
+    --shell:#FCFBFE;
+    --ink:#38304D;
+    --ink-soft:#584F73;
+    --ink-muted:#9089A5;
+    --blue:#3D6FF2;
+    --blue-dark:#2E56D9;
+    --blue-soft:#EAF0FF;
+    --pink:#FF5FA5;
+    --pink-soft:#FFE7F2;
+    --green:#2FBF88;
+    --green-soft:#E4F9F1;
+    --amber:#FFB23E;
+    --amber-soft:#FFF3E0;
+    --red:#F0553E;
+    --red-soft:#FDEAE6;
+    --border:#F1EEF6;
+    --shadow-sm: 0 2px 10px -4px rgba(56,48,77,0.08);
+    --shadow-lg: 0 20px 50px -20px rgba(56,48,77,0.28);
+    --radius-lg:26px;
+    --radius-md:18px;
+    --radius-sm:12px;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
-    background:
-      linear-gradient(180deg, rgba(30,43,40,0.03), rgba(30,43,40,0) 220px),
-      var(--paper);
-    color:var(--ink);
     font-family:'Inter', sans-serif;
+    color:var(--ink);
     min-height:100vh;
+    background:
+      radial-gradient(1100px 600px at 85% -10%, #FBD9E4 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 10%, #FBE4D9 0%, transparent 55%),
+      linear-gradient(160deg, var(--bg1), var(--bg2) 45%, var(--bg3));
+    padding:26px;
   }
-  ::selection{background:var(--amber); color:var(--ink);}
+  ::selection{background:var(--pink); color:#fff;}
+  h1,h2,h3{font-family:'Poppins', sans-serif; margin:0;}
 
-  /* ---------- Topbar ---------- */
-  .topbar{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:22px 28px;
-    border-bottom:1px solid var(--border);
+  .app-shell{
+    max-width:1320px;
+    margin:0 auto;
+    background:var(--shell);
+    border-radius:32px;
+    box-shadow:var(--shadow-lg);
+    display:flex;
+    min-height:calc(100vh - 52px);
+    overflow:hidden;
+  }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar{
+    width:230px;
+    flex-shrink:0;
     background:var(--panel);
-    position:sticky; top:0; z-index:30;
+    padding:28px 18px;
+    display:flex;
+    flex-direction:column;
+    gap:26px;
+    border-right:1px solid var(--border);
   }
-  .brand{display:flex;align-items:center;gap:12px;}
-  .brand svg{display:block;}
-  .brand-text{
-    font-family:'Archivo', sans-serif;
-    font-weight:800;
-    font-size:22px;
-    letter-spacing:0.06em;
-    color:var(--ink);
+  .logo{display:flex; align-items:center; gap:10px; padding:0 8px;}
+  .logo-text{font-family:'Poppins',sans-serif; font-weight:800; font-size:17px; color:var(--ink); letter-spacing:0.01em;}
+  .nav{display:flex; flex-direction:column; gap:4px;}
+  .nav-item{
+    display:flex; align-items:center; gap:12px;
+    padding:12px 14px; border-radius:14px;
+    color:var(--ink-muted); font-weight:600; font-size:14px;
+    cursor:pointer; border:none; background:none; text-align:left; width:100%;
+    transition:background .15s ease, color .15s ease;
   }
-  .brand-sub{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11px;
-    letter-spacing:0.12em;
-    color:var(--ink-muted);
-    text-transform:uppercase;
-    margin-top:2px;
+  .nav-item .dot{width:8px;height:8px;border-radius:50%; margin-left:auto; background:var(--pink); display:none;}
+  .nav-item.active{background:var(--blue-soft); color:var(--blue-dark);}
+  .nav-item:hover:not(.active){background:#F7F5FB;}
+  .nav-icon{font-size:16px; width:20px; text-align:center;}
+  .sidebar-cta{
+    margin-top:auto;
+    background:linear-gradient(135deg, var(--blue), #6C8CFF);
+    border-radius:20px;
+    padding:18px;
+    color:#fff;
   }
+  .sidebar-cta p{font-size:12.5px; opacity:0.9; margin:0 0 10px; line-height:1.5;}
+  .sidebar-cta button{
+    width:100%; background:#fff; color:var(--blue-dark); border:none;
+    padding:10px; border-radius:12px; font-weight:700; font-size:13px; cursor:pointer;
+  }
+
+  /* ---------- Main ---------- */
+  .main{flex:1; padding:30px 34px; min-width:0; overflow-x:hidden;}
+  .topbar-in{
+    display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
+    margin-bottom:26px; flex-wrap:wrap;
+  }
+  .topbar-in h1{font-size:26px; font-weight:800; color:var(--ink);}
+  .topbar-in .sub{font-size:13.5px; color:var(--ink-muted); margin-top:4px;}
+  .top-actions{display:flex; align-items:center; gap:10px;}
+  .search-wrap{position:relative;}
+  .search-wrap input{
+    font-family:'Inter',sans-serif; font-size:13.5px;
+    padding:11px 14px 11px 36px; border-radius:14px; border:1px solid var(--border);
+    background:#F7F5FB; width:200px; color:var(--ink);
+  }
+  .search-wrap .icon{position:absolute; left:12px; top:50%; transform:translateY(-50%); font-size:14px; opacity:0.5;}
   .btn{
-    font-family:'Inter', sans-serif;
-    font-weight:600;
-    font-size:14px;
-    border:none;
-    border-radius:10px;
-    padding:11px 18px;
-    cursor:pointer;
-    transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+    font-family:'Inter', sans-serif; font-weight:700; font-size:13.5px;
+    border:none; border-radius:14px; padding:11px 18px; cursor:pointer;
     display:inline-flex; align-items:center; gap:8px;
+    transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
   }
   .btn:active{transform:translateY(1px);}
-  .btn-primary{background:var(--teal); color:#fff; box-shadow:0 4px 12px -4px rgba(14,110,99,0.55);}
-  .btn-primary:hover{background:var(--teal-dark);}
-  .btn-ghost{background:transparent; color:var(--ink); border:1px solid var(--border-strong);}
-  .btn-ghost:hover{background:rgba(30,43,40,0.05);}
-  .btn-danger{background:transparent;color:var(--red);border:1px solid rgba(178,58,46,0.35);}
-  .btn-danger:hover{background:rgba(178,58,46,0.08);}
-  .btn:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, .tab:focus-visible{
-    outline:2px solid var(--teal); outline-offset:2px;
+  .btn-primary{background:linear-gradient(135deg, var(--blue), #6C8CFF); color:#fff; box-shadow:0 10px 20px -8px rgba(61,111,242,0.55);}
+  .btn-primary:hover{filter:brightness(1.04);}
+  .btn-ghost{background:#F7F5FB; color:var(--ink);}
+  .btn-ghost:hover{background:#EFEBF6;}
+  .btn-danger{background:var(--red-soft); color:var(--red);}
+  .btn-danger:hover{background:#FADDD6;}
+  .btn:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, .nav-item:focus-visible{
+    outline:2px solid var(--blue); outline-offset:2px;
   }
 
-  /* ---------- Layout ---------- */
-  .container{max-width:1180px; margin:0 auto; padding:28px;}
+  /* ---------- Stats ---------- */
+  .stats-row{
+    display:grid; grid-template-columns:1.2fr 1fr 1fr 1fr 1fr; gap:16px; margin-bottom:26px;
+  }
+  .stat-card{
+    border-radius:22px; padding:20px; position:relative; overflow:hidden;
+    background:var(--panel); border:1px solid var(--border);
+  }
+  .stat-card.hero{
+    background:linear-gradient(135deg, var(--blue) 0%, #6C8CFF 100%);
+    color:#fff; border:none;
+  }
+  .stat-card.hero::after{
+    content:''; position:absolute; right:-30px; bottom:-30px; width:120px; height:120px;
+    border-radius:50%; background:rgba(255,255,255,0.12);
+  }
+  .stat-label{font-size:12px; font-weight:600; opacity:0.75; text-transform:uppercase; letter-spacing:0.04em;}
+  .stat-card.hero .stat-label{opacity:0.85;}
+  .stat-value{font-family:'Poppins',sans-serif; font-weight:800; font-size:28px; margin-top:8px;}
+  .stat-icon{
+    width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center;
+    font-size:16px; margin-bottom:10px;
+  }
 
-  /* ---------- Dashboard gauges ---------- */
-  .dashboard{
-    display:grid;
-    grid-template-columns:repeat(5, 1fr);
-    gap:14px;
-    margin-bottom:28px;
-  }
-  .gauge{
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    padding:16px 18px;
-    box-shadow:var(--shadow);
-    position:relative;
-    overflow:hidden;
-  }
-  .gauge::before{
-    content:'';
-    position:absolute; left:0; top:0; bottom:0; width:4px;
-    background:var(--gauge-color, var(--teal));
-  }
-  .gauge-label{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11px;
-    letter-spacing:0.08em;
-    text-transform:uppercase;
-    color:var(--ink-muted);
-  }
-  .gauge-value{
-    font-family:'Archivo', sans-serif;
-    font-weight:800;
-    font-size:34px;
-    line-height:1.1;
-    margin-top:6px;
-    color:var(--ink);
-  }
-  .gauge-unit{font-size:14px; font-weight:600; color:var(--ink-muted); margin-left:4px;}
-
-  /* ---------- Filters ---------- */
+  /* ---------- Toolbar / filters ---------- */
   .toolbar{
-    display:flex; align-items:center; justify-content:space-between; gap:16px;
-    flex-wrap:wrap;
+    display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;
     margin-bottom:18px;
   }
-  .tabs{display:flex; gap:6px; background:var(--panel); padding:5px; border-radius:12px; border:1px solid var(--border);}
-  .tab{
-    font-family:'Inter', sans-serif; font-weight:600; font-size:13.5px;
-    padding:8px 14px; border-radius:8px; border:none; background:transparent;
-    color:var(--ink-muted); cursor:pointer; white-space:nowrap;
+  .toolbar h2{font-size:18px; font-weight:700;}
+  .filter-row{display:flex; gap:10px; flex-wrap:wrap;}
+  select.filter{
+    font-family:'Inter', sans-serif; font-size:13px; font-weight:600;
+    padding:9px 12px; border-radius:12px; border:1px solid var(--border);
+    background:#F7F5FB; color:var(--ink-soft);
   }
-  .tab.active{background:var(--ink); color:#fff;}
-  .filter-row{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
-  select.filter, input.search{
-    font-family:'Inter', sans-serif; font-size:13.5px; font-weight:500;
-    padding:9px 12px; border-radius:9px; border:1px solid var(--border-strong);
-    background:var(--panel); color:var(--ink);
-  }
-  input.search{min-width:200px;}
 
-  /* ---------- Task grid: ticket cards ---------- */
-  .grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));
-    gap:18px;
-  }
-  .ticket{
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    box-shadow:var(--shadow);
-    display:flex;
-    cursor:pointer;
-    overflow:hidden;
-    position:relative;
+  /* ---------- Task list ---------- */
+  .grid{display:flex; flex-direction:column; gap:12px;}
+  .task-row{
+    background:var(--panel); border:1px solid var(--border); border-radius:20px;
+    padding:16px 18px; display:flex; align-items:center; gap:16px; cursor:pointer;
     transition:transform .14s ease, box-shadow .14s ease;
   }
-  .ticket:hover{transform:translateY(-3px); box-shadow:0 4px 0 rgba(30,43,40,0.06), 0 16px 32px -14px rgba(30,43,40,0.28);}
-  .ticket-stub{
-    width:56px;
-    flex-shrink:0;
-    background:var(--stub-color, var(--teal));
-    color:#fff;
-    display:flex; flex-direction:column; align-items:center; justify-content:space-between;
-    padding:14px 0;
-    position:relative;
+  .task-row:hover{transform:translateY(-2px); box-shadow:var(--shadow-sm);}
+  .task-avatar{
+    width:46px; height:46px; border-radius:15px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; font-size:19px;
   }
-  .ticket-stub::after{
-    content:'';
-    position:absolute; right:-1px; top:0; bottom:0; width:0;
-    border-right:2px dashed rgba(255,255,255,0.55);
-  }
-  .stub-icon{font-size:20px;}
-  .stub-id{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:10px;
-    writing-mode:vertical-rl;
-    letter-spacing:0.08em;
-    opacity:0.85;
-  }
-  .ticket-body{
-    padding:16px 16px 14px 18px;
-    flex:1;
-    min-width:0;
-    display:flex; flex-direction:column; gap:8px;
-  }
-  .ticket-top{display:flex; align-items:flex-start; justify-content:space-between; gap:8px;}
-  .ticket-title{
-    font-family:'Archivo', sans-serif;
-    font-weight:700;
-    font-size:16.5px;
-    line-height:1.3;
-    color:var(--ink);
-    overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
-  }
-  .stamp{
-    flex-shrink:0;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:10px;
-    font-weight:600;
-    letter-spacing:0.06em;
-    text-transform:uppercase;
-    border:2px solid var(--red);
-    color:var(--red);
-    border-radius:999px;
-    padding:4px 9px;
-    transform:rotate(-6deg);
-  }
-  .stamp.normal{border-color:var(--ink-muted); color:var(--ink-muted); transform:rotate(-4deg);}
-  .ticket-desc{
-    font-size:13px; color:var(--ink-muted); line-height:1.5;
-    overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
-    min-height:0;
-  }
-  .ticket-meta{
-    display:flex; align-items:center; justify-content:space-between;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11.5px;
-    color:var(--ink-muted);
-    margin-top:auto;
-    padding-top:8px;
-    border-top:1px dashed var(--border);
-  }
+  .task-main{flex:1; min-width:0;}
+  .task-title-row{display:flex; align-items:center; gap:8px;}
+  .task-title{font-weight:700; font-size:15px; color:var(--ink); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .priority-dot{width:8px; height:8px; border-radius:50%; background:var(--red); flex-shrink:0;}
+  .task-desc{font-size:12.5px; color:var(--ink-muted); margin-top:3px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .task-side{display:flex; align-items:center; gap:18px; flex-shrink:0;}
+  .task-due{font-size:12.5px; color:var(--ink-muted); text-align:right; font-weight:600;}
+  .task-due span{display:block; font-size:11px; color:var(--ink-muted); font-weight:500; opacity:0.8;}
   .status-pill{
-    font-family:'Inter', sans-serif; font-weight:600; font-size:11.5px;
-    padding:3px 9px; border-radius:999px;
-    background:rgba(14,110,99,0.1); color:var(--teal-dark);
+    font-weight:700; font-size:11.5px; padding:6px 12px; border-radius:999px; white-space:nowrap;
+    background:var(--blue-soft); color:var(--blue-dark);
   }
-  .status-pill.done{background:rgba(61,131,97,0.14); color:var(--green);}
-  .status-pill.overdue{background:rgba(178,58,46,0.12); color:var(--red);}
-  .status-pill.pending{background:rgba(91,107,102,0.12); color:var(--ink-muted);}
+  .status-pill.done{background:var(--green-soft); color:var(--green);}
+  .status-pill.overdue{background:var(--red-soft); color:var(--red);}
+  .status-pill.pending{background:#F1EEF6; color:var(--ink-muted);}
 
   .empty-state{
-    grid-column:1/-1;
-    text-align:center;
-    padding:70px 20px;
-    color:var(--ink-muted);
-    border:1px dashed var(--border-strong);
-    border-radius:var(--radius);
-    background:var(--panel);
+    text-align:center; padding:70px 20px; color:var(--ink-muted);
+    border:1.5px dashed var(--border); border-radius:var(--radius-lg); background:var(--panel);
   }
-  .empty-state h3{font-family:'Archivo', sans-serif; color:var(--ink); margin:0 0 6px;}
+  .empty-state h3{color:var(--ink); margin:0 0 6px;}
 
   /* ---------- Modal ---------- */
   .overlay{
-    position:fixed; inset:0; background:rgba(20,28,26,0.5);
+    position:fixed; inset:0; background:rgba(56,48,77,0.35); backdrop-filter:blur(2px);
     display:none; align-items:flex-start; justify-content:center;
     padding:40px 16px; overflow-y:auto; z-index:100;
   }
   .overlay.show{display:flex;}
   .modal{
-    background:var(--panel);
-    border-radius:16px;
-    width:100%; max-width:560px;
-    box-shadow:0 24px 60px -20px rgba(0,0,0,0.4);
-    overflow:hidden;
+    background:var(--panel); border-radius:26px; width:100%; max-width:560px;
+    box-shadow:0 30px 70px -20px rgba(56,48,77,0.4); overflow:hidden;
   }
-  .modal-head{
-    display:flex; align-items:center; justify-content:space-between;
-    padding:20px 22px; border-bottom:1px solid var(--border);
-  }
-  .modal-head h2{font-family:'Archivo', sans-serif; font-size:18px; margin:0;}
-  .icon-btn{background:none; border:none; cursor:pointer; font-size:20px; color:var(--ink-muted); line-height:1; padding:4px;}
-  .modal-body{padding:22px; display:flex; flex-direction:column; gap:16px; max-height:70vh; overflow-y:auto;}
-  .field{display:flex; flex-direction:column; gap:6px;}
-  .field label{font-size:13px; font-weight:600; color:var(--ink);}
+  .modal-head{display:flex; align-items:center; justify-content:space-between; padding:22px 24px; border-bottom:1px solid var(--border);}
+  .modal-head h2{font-size:18px;}
+  .icon-btn{background:#F7F5FB; border:none; cursor:pointer; font-size:15px; color:var(--ink-muted); line-height:1; width:32px; height:32px; border-radius:10px;}
+  .modal-body{padding:24px; display:flex; flex-direction:column; gap:16px; max-height:70vh; overflow-y:auto;}
+  .field{display:flex; flex-direction:column; gap:7px;}
+  .field label{font-size:13px; font-weight:700; color:var(--ink-soft);}
   .field input[type=text], .field textarea, .field select, .field input[type=date]{
     font-family:'Inter', sans-serif; font-size:14px;
-    padding:10px 12px; border-radius:9px; border:1px solid var(--border-strong);
-    background:#fff; color:var(--ink); width:100%;
+    padding:11px 13px; border-radius:13px; border:1px solid var(--border);
+    background:#F9F8FC; color:var(--ink); width:100%;
   }
   .field textarea{resize:vertical; min-height:80px;}
   .field-row{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
   .chip-group{display:flex; gap:8px; flex-wrap:wrap;}
   .chip{
-    font-family:'Inter', sans-serif; font-weight:600; font-size:13px;
-    padding:8px 14px; border-radius:999px; border:1.5px solid var(--border-strong);
-    background:#fff; color:var(--ink-muted); cursor:pointer;
+    font-weight:700; font-size:13px; padding:9px 15px; border-radius:999px;
+    border:1.5px solid var(--border); background:#F9F8FC; color:var(--ink-muted); cursor:pointer;
   }
-  .chip.active{border-color:var(--teal); background:rgba(14,110,99,0.1); color:var(--teal-dark);}
-  .chip.priority-active{border-color:var(--red); background:rgba(178,58,46,0.08); color:var(--red);}
+  .chip.active{border-color:var(--blue); background:var(--blue-soft); color:var(--blue-dark);}
+  .chip.priority-active{border-color:var(--red); background:var(--red-soft); color:var(--red);}
   .upload-box{
-    border:1.5px dashed var(--border-strong); border-radius:12px;
-    padding:16px; text-align:center; cursor:pointer; color:var(--ink-muted); font-size:13px;
-    position:relative;
+    border:1.5px dashed var(--border); border-radius:16px; padding:16px; text-align:center;
+    cursor:pointer; color:var(--ink-muted); font-size:13px; background:#F9F8FC;
   }
-  .upload-box img{max-width:100%; max-height:160px; border-radius:8px; display:block; margin:0 auto 8px;}
-  .modal-foot{
-    padding:16px 22px; border-top:1px solid var(--border);
-    display:flex; justify-content:flex-end; gap:10px;
-  }
+  .upload-box img{max-width:100%; max-height:160px; border-radius:12px; display:block; margin:0 auto 8px;}
+  .modal-foot{padding:18px 24px; border-top:1px solid var(--border); display:flex; justify-content:flex-end; gap:10px;}
 
-  /* Detail modal */
-  .detail-stamp-row{display:flex; gap:8px; align-items:center;}
-  .detail-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px; font-size:13.5px;}
-  .detail-grid .k{font-family:'IBM Plex Mono', monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-muted); margin-bottom:3px;}
-  .detail-grid .v{font-weight:600; color:var(--ink);}
-  .detail-image{width:100%; border-radius:12px; border:1px solid var(--border); max-height:280px; object-fit:cover;}
-  .detail-desc{font-size:14px; line-height:1.6; color:var(--ink); white-space:pre-wrap;}
+  .detail-stamp-row{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
+  .type-tag{font-weight:700; font-size:12px; padding:6px 12px; border-radius:999px; background:#F1EEF6; color:var(--ink-soft);}
+  .detail-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px; font-size:13.5px;}
+  .detail-grid .k{font-size:11px; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-muted); margin-bottom:3px; font-weight:600;}
+  .detail-grid .v{font-weight:700; color:var(--ink);}
+  .detail-image{width:100%; border-radius:16px; border:1px solid var(--border); max-height:280px; object-fit:cover;}
+  .detail-desc{font-size:14px; line-height:1.6; color:var(--ink-soft); white-space:pre-wrap;}
 
   .toast-wrap{position:fixed; bottom:20px; right:20px; display:flex; flex-direction:column; gap:10px; z-index:200;}
   .toast{
-    background:var(--ink); color:#fff; padding:12px 16px; border-radius:10px;
-    font-size:13.5px; font-weight:500; box-shadow:0 10px 24px -8px rgba(0,0,0,0.4);
+    background:var(--ink); color:#fff; padding:12px 16px; border-radius:14px;
+    font-size:13.5px; font-weight:600; box-shadow:0 10px 24px -8px rgba(0,0,0,0.4);
     animation:slideIn .2s ease;
   }
   .toast.error{background:var(--red);}
   @keyframes slideIn{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
 
   .config-warning{
-    background:#FFF6E5; border:1px solid var(--amber); color:#7A5210;
-    border-radius:12px; padding:14px 18px; margin-bottom:20px; font-size:13.5px; line-height:1.6;
+    background:var(--amber-soft); border:1px solid var(--amber); color:#8A5A00;
+    border-radius:16px; padding:14px 18px; margin-bottom:20px; font-size:13.5px; line-height:1.6;
   }
-  .config-warning code{background:rgba(0,0,0,0.06); padding:2px 6px; border-radius:5px; font-family:'IBM Plex Mono',monospace;}
+  .config-warning code{background:rgba(0,0,0,0.06); padding:2px 6px; border-radius:6px; font-family:monospace;}
 
-  @media (max-width:900px){
-    .dashboard{grid-template-columns:repeat(2, 1fr);}
+  @media (max-width:980px){
+    .stats-row{grid-template-columns:1fr 1fr 1fr;}
+    .sidebar{width:76px; align-items:center;}
+    .logo-text, .nav-item span:not(.nav-icon), .sidebar-cta{display:none;}
+    .nav-item{justify-content:center; padding:12px;}
+  }
+  @media (max-width:640px){
+    body{padding:10px;}
+    .app-shell{border-radius:22px; flex-direction:column;}
+    .sidebar{width:100%; flex-direction:row; overflow-x:auto; border-right:none; border-bottom:1px solid var(--border);}
+    .sidebar-cta{display:none;}
+    .main{padding:20px;}
+    .stats-row{grid-template-columns:1fr 1fr;}
     .field-row{grid-template-columns:1fr;}
+    .task-row{flex-wrap:wrap;}
+    .task-side{margin-left:60px;}
   }
-  @media (max-width:560px){
-    .dashboard{grid-template-columns:1fr 1fr;}
-    .container{padding:18px;}
-    .topbar{padding:16px;}
-  }
-  @media (prefers-reduced-motion: reduce){
-    *{animation:none !important; transition:none !important;}
-  }
+  @media (prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important;} }
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="brand">
-    <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
-      <circle cx="17" cy="17" r="16" stroke="#1E2B28" stroke-width="2"/>
-      <circle cx="17" cy="17" r="2.4" fill="#1E2B28"/>
-      <line x1="17" y1="17" x2="17" y2="7" stroke="#B23A2E" stroke-width="2" stroke-linecap="round"/>
-      <line x1="17" y1="17" x2="23" y2="21" stroke="#0E6E63" stroke-width="2" stroke-linecap="round"/>
-    </svg>
-    <div>
-      <div class="brand-text">TO DO LIST</div>
-      <div class="brand-sub">Work Order Tracker</div>
-    </div>
-  </div>
-  <button class="btn btn-primary" id="btnAdd">+ เพิ่มงานใหม่</button>
-</div>
+<div class="app-shell">
 
-<div class="container">
+  <aside class="sidebar">
+    <div class="logo">
+      <span style="font-size:20px;">✅</span>
+      <span class="logo-text">TO DO LIST</span>
+    </div>
+    <nav class="nav" id="typeTabs">
+      <button class="nav-item active" data-type="ทั้งหมด"><span class="nav-icon">🏠</span><span>Dashboard</span></button>
+      <button class="nav-item" data-type="มิเตอร์"><span class="nav-icon">📟</span><span>มิเตอร์</span></button>
+      <button class="nav-item" data-type="บริการ"><span class="nav-icon">🛠️</span><span>บริการ</span></button>
+      <button class="nav-item" data-type="อื่นๆ"><span class="nav-icon">📋</span><span>อื่นๆ</span></button>
+    </nav>
+    <div class="sidebar-cta">
+      <p>บันทึกงานใหม่ พร้อมแนบรูปและกำหนดวันครบกำหนดได้ทันที</p>
+      <button id="btnAddSide">+ เพิ่มงานใหม่</button>
+    </div>
+  </aside>
 
-  <div id="configWarning" class="config-warning" style="display:none;">
-    ⚠️ ยังไม่ได้เชื่อมต่อ Google Apps Script — เปิดไฟล์ <code>index.html</code> แล้วแก้ค่า <code>GAS_URL</code> ในส่วนท้ายไฟล์ให้เป็น URL ของ Web App ที่ deploy ไว้ (ดูวิธีทำใน README.md)
-  </div>
+  <main class="main">
 
-  <div class="dashboard">
-    <div class="gauge" style="--gauge-color:var(--teal)">
-      <div class="gauge-label">ทั้งหมด</div>
-      <div class="gauge-value" id="statAll">0<span class="gauge-unit">งาน</span></div>
+    <div class="topbar-in">
+      <div>
+        <h1>Dashboard</h1>
+        <div class="sub">ภาพรวมงานทั้งหมดของคุณวันนี้</div>
+      </div>
+      <div class="top-actions">
+        <div class="search-wrap">
+          <span class="icon">🔍</span>
+          <input type="text" id="searchInput" placeholder="ค้นหาชื่องาน...">
+        </div>
+        <button class="btn btn-primary" id="btnAdd">+ เพิ่มงานใหม่</button>
+      </div>
     </div>
-    <div class="gauge" style="--gauge-color:var(--ink-muted)">
-      <div class="gauge-label">รอ / กำลังทำ</div>
-      <div class="gauge-value" id="statActive">0<span class="gauge-unit">งาน</span></div>
-    </div>
-    <div class="gauge" style="--gauge-color:var(--green)">
-      <div class="gauge-label">เสร็จแล้ว</div>
-      <div class="gauge-value" id="statDone">0<span class="gauge-unit">งาน</span></div>
-    </div>
-    <div class="gauge" style="--gauge-color:var(--red)">
-      <div class="gauge-label">เกินกำหนด</div>
-      <div class="gauge-value" id="statOverdue">0<span class="gauge-unit">งาน</span></div>
-    </div>
-    <div class="gauge" style="--gauge-color:var(--amber)">
-      <div class="gauge-label">งานสำคัญ</div>
-      <div class="gauge-value" id="statUrgent">0<span class="gauge-unit">งาน</span></div>
-    </div>
-  </div>
 
-  <div class="toolbar">
-    <div class="tabs" id="typeTabs">
-      <button class="tab active" data-type="ทั้งหมด">ทั้งหมด</button>
-      <button class="tab" data-type="มิเตอร์">มิเตอร์</button>
-      <button class="tab" data-type="บริการ">บริการ</button>
-      <button class="tab" data-type="อื่นๆ">อื่นๆ</button>
+    <div id="configWarning" class="config-warning" style="display:none;">
+      ⚠️ เชื่อมต่อ Google Apps Script ไม่สำเร็จ — ตรวจสอบว่า Deploy เป็น <code>Anyone</code> และคัดลอก Web app URL (ที่ลงท้ายด้วย <code>/exec</code>) มาใส่ในตัวแปร <code>GAS_URL</code> ถูกต้องแล้ว ดูวิธีแก้ใน README.md
     </div>
-    <div class="filter-row">
-      <input class="search" id="searchInput" type="text" placeholder="ค้นหาชื่องาน...">
-      <select class="filter" id="priorityFilter">
-        <option value="ทั้งหมด">ความสำคัญ: ทั้งหมด</option>
-        <option value="สำคัญ">สำคัญ</option>
-        <option value="ปกติ">ปกติ</option>
-      </select>
-      <select class="filter" id="statusFilter">
-        <option value="ทั้งหมด">สถานะ: ทั้งหมด</option>
-        <option value="รอดำเนินการ">รอดำเนินการ</option>
-        <option value="กำลังทำ">กำลังทำ</option>
-        <option value="เสร็จแล้ว">เสร็จแล้ว</option>
-      </select>
-    </div>
-  </div>
 
-  <div class="grid" id="taskGrid">
-    <div class="empty-state"><h3>กำลังโหลด...</h3></div>
-  </div>
+    <div class="stats-row">
+      <div class="stat-card hero">
+        <div class="stat-label">งานทั้งหมด</div>
+        <div class="stat-value" id="statAll">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:var(--blue-soft); color:var(--blue-dark);">⏳</div>
+        <div class="stat-label">รอ/กำลังทำ</div>
+        <div class="stat-value" id="statActive">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:var(--green-soft); color:var(--green);">✅</div>
+        <div class="stat-label">เสร็จแล้ว</div>
+        <div class="stat-value" id="statDone">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:var(--red-soft); color:var(--red);">⚠️</div>
+        <div class="stat-label">เกินกำหนด</div>
+        <div class="stat-value" id="statOverdue">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:var(--amber-soft); color:var(--amber);">🔴</div>
+        <div class="stat-label">งานสำคัญ</div>
+        <div class="stat-value" id="statUrgent">0</div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <h2>รายการงาน</h2>
+      <div class="filter-row">
+        <select class="filter" id="priorityFilter">
+          <option value="ทั้งหมด">ความสำคัญ: ทั้งหมด</option>
+          <option value="สำคัญ">สำคัญ</option>
+          <option value="ปกติ">ปกติ</option>
+        </select>
+        <select class="filter" id="statusFilter">
+          <option value="ทั้งหมด">สถานะ: ทั้งหมด</option>
+          <option value="รอดำเนินการ">รอดำเนินการ</option>
+          <option value="กำลังทำ">กำลังทำ</option>
+          <option value="เสร็จแล้ว">เสร็จแล้ว</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid" id="taskGrid">
+      <div class="empty-state"><h3>กำลังโหลด...</h3></div>
+    </div>
+
+  </main>
 </div>
 
 <!-- Add/Edit Modal -->
@@ -492,10 +460,9 @@
 
 <script>
 /* =====================================================================
-   ตั้งค่าการเชื่อมต่อ
-   นำ Web App URL ที่ได้จากการ Deploy Google Apps Script มาใส่ตรงนี้
+   ตั้งค่าการเชื่อมต่อ Google Apps Script Web App URL
 ===================================================================== */
-const GAS_URL = "https://script.google.com/macros/s/AKfycbxInpz9MEq8y7XrW4lqOmUk0w77IJZZ0Yj7x6cMzdTwQbxTE6JkxgiDiBo-uWW6/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbxCL3-DEBK-9a3OhX0EzLgXYeCHHt9GVOHQkuoK7FBGYjwFQjVQ8Y6mm8zzLDlXnOM/exec";
 /* ===================================================================== */
 
 let tasks = [];
@@ -528,6 +495,7 @@ async function apiGet(action, params){
   url.searchParams.set('action', action);
   Object.keys(params||{}).forEach(k => url.searchParams.set(k, params[k]));
   const res = await fetch(url.toString());
+  if (!res.ok) throw new Error('HTTP ' + res.status);
   return res.json();
 }
 
@@ -537,6 +505,7 @@ async function apiPost(payload){
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(payload)
   });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
   return res.json();
 }
 
@@ -552,11 +521,15 @@ async function loadTasks(){
     const data = await apiGet('list');
     if (data.success){
       tasks = data.tasks || [];
+      $('#configWarning').style.display = 'none';
     } else {
+      $('#configWarning').style.display = 'block';
       showToast(data.message || 'โหลดข้อมูลไม่สำเร็จ', true);
     }
   } catch (err){
+    $('#configWarning').style.display = 'block';
     showToast('เชื่อมต่อ Google Apps Script ไม่สำเร็จ', true);
+    console.error(err);
   }
   render();
 }
@@ -577,9 +550,9 @@ function statusLabel(task){
 }
 
 const TYPE_META = {
-  'มิเตอร์': { icon:'📟', color:'var(--teal)' },
-  'บริการ': { icon:'🛠️', color:'var(--amber)' },
-  'อื่นๆ':  { icon:'📋', color:'var(--ink-muted)' }
+  'มิเตอร์': { icon:'📟', bg:'var(--blue-soft)', color:'var(--blue-dark)' },
+  'บริการ': { icon:'🛠️', bg:'var(--amber-soft)', color:'var(--amber)' },
+  'อื่นๆ':  { icon:'📋', bg:'var(--pink-soft)', color:'var(--pink)' }
 };
 
 function fmtDate(d){
@@ -601,11 +574,11 @@ function renderStats(){
   const overdue = tasks.filter(isOverdue).length;
   const active = all - done;
   const urgent = tasks.filter(t => t.priority === 'สำคัญ' && t.status !== 'เสร็จแล้ว').length;
-  $('#statAll').innerHTML = all + '<span class="gauge-unit">งาน</span>';
-  $('#statActive').innerHTML = active + '<span class="gauge-unit">งาน</span>';
-  $('#statDone').innerHTML = done + '<span class="gauge-unit">งาน</span>';
-  $('#statOverdue').innerHTML = overdue + '<span class="gauge-unit">งาน</span>';
-  $('#statUrgent').innerHTML = urgent + '<span class="gauge-unit">งาน</span>';
+  $('#statAll').textContent = all;
+  $('#statActive').textContent = active;
+  $('#statDone').textContent = done;
+  $('#statOverdue').textContent = overdue;
+  $('#statUrgent').textContent = urgent;
 }
 
 function renderGrid(){
@@ -633,28 +606,24 @@ function renderGrid(){
   grid.innerHTML = list.map(t => {
     const meta = TYPE_META[t.type] || TYPE_META['อื่นๆ'];
     const st = statusLabel(t);
-    const idShort = (t.id||'').substring(0,6).toUpperCase();
     return `
-      <div class="ticket" data-id="${t.id}">
-        <div class="ticket-stub" style="--stub-color:${meta.color}">
-          <div class="stub-icon">${meta.icon}</div>
-          <div class="stub-id">#${idShort}</div>
+      <div class="task-row" data-id="${t.id}">
+        <div class="task-avatar" style="background:${meta.bg}; color:${meta.color};">${meta.icon}</div>
+        <div class="task-main">
+          <div class="task-title-row">
+            ${t.priority === 'สำคัญ' ? '<span class="priority-dot"></span>' : ''}
+            <div class="task-title">${escapeHtml(t.title)}</div>
+          </div>
+          <div class="task-desc">${escapeHtml(t.description || 'ไม่มีรายละเอียดเพิ่มเติม')}</div>
         </div>
-        <div class="ticket-body">
-          <div class="ticket-top">
-            <div class="ticket-title">${escapeHtml(t.title)}</div>
-            <div class="stamp ${t.priority === 'สำคัญ' ? '' : 'normal'}">${t.priority === 'สำคัญ' ? 'สำคัญ' : 'ปกติ'}</div>
-          </div>
-          <div class="ticket-desc">${escapeHtml(t.description || 'ไม่มีรายละเอียดเพิ่มเติม')}</div>
-          <div class="ticket-meta">
-            <span>ครบกำหนด ${fmtDate(t.dueDate)}</span>
-            <span class="status-pill ${st.cls}">${st.text}</span>
-          </div>
+        <div class="task-side">
+          <div class="task-due">${fmtDate(t.dueDate)}<span>ครบกำหนด</span></div>
+          <span class="status-pill ${st.cls}">${st.text}</span>
         </div>
       </div>`;
   }).join('');
 
-  $$('.ticket').forEach(el => {
+  $$('.task-row').forEach(el => {
     el.addEventListener('click', () => openDetail(el.getAttribute('data-id')));
   });
 }
@@ -667,9 +636,9 @@ function escapeHtml(str){
 
 // ---------- Tabs & filters ----------
 $('#typeTabs').addEventListener('click', (e) => {
-  const btn = e.target.closest('.tab');
+  const btn = e.target.closest('.nav-item');
   if (!btn) return;
-  $$('.tab').forEach(b => b.classList.remove('active'));
+  $$('.nav-item').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   currentType = btn.getAttribute('data-type');
   renderGrid();
@@ -720,10 +689,12 @@ $$('#typeChips .chip, #priorityChips .chip').forEach(chip => {
   });
 });
 
-$('#btnAdd').addEventListener('click', () => {
+function openAddModal(){
   resetForm();
   $('#formOverlay').classList.add('show');
-});
+}
+$('#btnAdd').addEventListener('click', openAddModal);
+$('#btnAddSide').addEventListener('click', openAddModal);
 
 $('#uploadBox').addEventListener('click', () => $('#fImage').click());
 $('#fImage').addEventListener('change', (e) => {
@@ -796,6 +767,7 @@ $('#btnSave').addEventListener('click', async () => {
     }
   } catch (err){
     showToast('เชื่อมต่อไม่สำเร็จ', true);
+    console.error(err);
   }
   $('#btnSave').disabled = false;
   $('#btnSave').textContent = 'บันทึกงาน';
@@ -813,8 +785,8 @@ function openDetail(id){
   $('#detailBody').innerHTML = `
     <div class="detail-stamp-row">
       <span class="status-pill ${st.cls}">${st.text}</span>
-      <span class="stamp ${task.priority === 'สำคัญ' ? '' : 'normal'}">${task.priority === 'สำคัญ' ? 'สำคัญ' : 'ปกติ'}</span>
-      <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-muted);">${meta.icon} ${task.type}</span>
+      <span class="type-tag" style="background:${meta.bg}; color:${meta.color};">${meta.icon} ${task.type}</span>
+      ${task.priority === 'สำคัญ' ? '<span class="type-tag" style="background:var(--red-soft); color:var(--red);">🔴 สำคัญ</span>' : '<span class="type-tag">ปกติ</span>'}
     </div>
     ${task.imageUrl ? `<img class="detail-image" src="${task.imageUrl}" alt="รูปแนบ">` : ''}
     <div class="detail-desc">${escapeHtml(task.description) || 'ไม่มีรายละเอียดเพิ่มเติม'}</div>

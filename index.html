@@ -139,7 +139,10 @@
   .stat-card{
     border-radius:22px; padding:20px; position:relative; overflow:hidden;
     background:var(--panel); border:1px solid var(--border);
+    cursor:pointer; transition:transform .14s ease, box-shadow .14s ease;
   }
+  .stat-card:hover{transform:translateY(-3px); box-shadow:var(--shadow-sm);}
+  .stat-card:active{transform:translateY(-1px);}
   .stat-card.hero{
     background:linear-gradient(135deg, var(--blue) 0%, #6C8CFF 100%);
     color:#fff; border:none;
@@ -168,6 +171,13 @@
     padding:9px 12px; border-radius:12px; border:1px solid var(--border);
     background:#F7F5FB; color:var(--ink-soft);
   }
+
+  .quick-filter-bar{
+    display:flex; align-items:center; gap:10px; margin-bottom:14px;
+    background:var(--blue-soft); color:var(--blue-dark); border-radius:14px;
+    padding:10px 14px; font-weight:700; font-size:13.5px;
+  }
+  .quick-filter-bar .chip{padding:5px 12px; font-size:12px;}
 
   /* ---------- Task list ---------- */
   .grid{display:flex; flex-direction:column; gap:12px;}
@@ -381,26 +391,26 @@
     <div id="todayEventsBanner" class="reminder-banner" style="display:none;"></div>
 
     <div class="stats-row">
-      <div class="stat-card hero">
+      <div class="stat-card hero" data-filter="all">
         <div class="stat-label">งานทั้งหมด</div>
         <div class="stat-value" id="statAll">0</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card" data-filter="active">
         <div class="stat-icon" style="background:var(--blue-soft); color:var(--blue-dark);">⏳</div>
         <div class="stat-label">รอ/กำลังทำ</div>
         <div class="stat-value" id="statActive">0</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card" data-filter="done">
         <div class="stat-icon" style="background:var(--green-soft); color:var(--green);">✅</div>
         <div class="stat-label">เสร็จแล้ว</div>
         <div class="stat-value" id="statDone">0</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card" data-filter="overdue">
         <div class="stat-icon" style="background:var(--red-soft); color:var(--red);">⚠️</div>
         <div class="stat-label">เกินกำหนด</div>
         <div class="stat-value" id="statOverdue">0</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card" data-filter="urgent">
         <div class="stat-icon" style="background:var(--amber-soft); color:var(--amber);">🔴</div>
         <div class="stat-label">งานสำคัญ</div>
         <div class="stat-value" id="statUrgent">0</div>
@@ -422,6 +432,11 @@
           <option value="เสร็จแล้ว">เสร็จแล้ว</option>
         </select>
       </div>
+    </div>
+
+    <div id="quickFilterBar" class="quick-filter-bar" style="display:none;">
+      <span id="quickFilterLabel"></span>
+      <button class="chip" id="clearQuickFilter">✕ ล้างตัวกรอง</button>
     </div>
 
     <div class="grid" id="taskGrid">
@@ -617,7 +632,7 @@
 /* =====================================================================
    ตั้งค่าการเชื่อมต่อ Google Apps Script Web App URL
 ===================================================================== */
-const GAS_URL = "https://script.google.com/macros/s/AKfycbyStOBJ968TFn8PHu_CEPhkG4SYI02uaXkQvi9q7BHk3pEeCuEEPr5Z23-qnvD29mI/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbwyDQ26uQlzS1mOiffmljbKNc5NmejVZdXCxEHzCXs89tAcDAxTgBuVIWr6tlawz4A/exec";
 /* ===================================================================== */
 
 let tasks = [];
@@ -736,6 +751,60 @@ function renderStats(){
   $('#statUrgent').textContent = urgent;
 }
 
+let quickFilter = null;
+const QUICK_FILTER_LABELS = {
+  active: 'กำลังแสดง: งานที่รอ/กำลังทำ',
+  done: 'กำลังแสดง: งานที่เสร็จแล้ว',
+  overdue: 'กำลังแสดง: งานที่เกินกำหนด',
+  urgent: 'กำลังแสดง: งานสำคัญ'
+};
+
+function passesQuickFilter(t){
+  if (!quickFilter) return true;
+  if (quickFilter === 'active') return t.status !== 'เสร็จแล้ว';
+  if (quickFilter === 'done') return t.status === 'เสร็จแล้ว';
+  if (quickFilter === 'overdue') return isOverdue(t);
+  if (quickFilter === 'urgent') return t.priority === 'สำคัญ' && t.status !== 'เสร็จแล้ว';
+  return true;
+}
+
+function updateQuickFilterBar(){
+  const bar = $('#quickFilterBar');
+  if (quickFilter){
+    bar.style.display = 'flex';
+    $('#quickFilterLabel').textContent = QUICK_FILTER_LABELS[quickFilter] || '';
+  } else {
+    bar.style.display = 'none';
+  }
+}
+
+function clearQuickFilter(){
+  quickFilter = null;
+  updateQuickFilterBar();
+}
+
+$('#clearQuickFilter').addEventListener('click', () => {
+  clearQuickFilter();
+  renderGrid();
+});
+
+$$('.stat-card[data-filter]').forEach(card => {
+  card.addEventListener('click', () => {
+    const f = card.getAttribute('data-filter');
+    quickFilter = (f === 'all') ? null : f;
+    currentType = 'ทั้งหมด';
+    $$('.nav-item').forEach(b => b.classList.remove('active'));
+    const dashBtn = document.querySelector('.nav-item[data-type="ทั้งหมด"]');
+    if (dashBtn) dashBtn.classList.add('active');
+    $('#priorityFilter').value = 'ทั้งหมด';
+    $('#statusFilter').value = 'ทั้งหมด';
+    $('#searchInput').value = '';
+    updateQuickFilterBar();
+    renderGrid();
+    $('#taskGrid').scrollIntoView({ behavior:'smooth', block:'start' });
+  });
+});
+
 function renderGrid(){
   const grid = $('#taskGrid');
   const search = $('#searchInput').value.trim().toLowerCase();
@@ -743,6 +812,7 @@ function renderGrid(){
   const sFilter = $('#statusFilter').value;
 
   let list = tasks.filter(t => {
+    if (!passesQuickFilter(t)) return false;
     if (currentType !== 'ทั้งหมด' && t.type !== currentType) return false;
     if (pFilter !== 'ทั้งหมด' && t.priority !== pFilter) return false;
     if (sFilter !== 'ทั้งหมด'){
@@ -808,11 +878,12 @@ $('#typeTabs').addEventListener('click', (e) => {
   $('#page-calendar').style.display = 'none';
   $('#page-tasks').style.display = 'block';
   currentType = btn.getAttribute('data-type');
+  clearQuickFilter();
   renderGrid();
 });
-$('#searchInput').addEventListener('input', renderGrid);
-$('#priorityFilter').addEventListener('change', renderGrid);
-$('#statusFilter').addEventListener('change', renderGrid);
+$('#searchInput').addEventListener('input', () => { clearQuickFilter(); renderGrid(); });
+$('#priorityFilter').addEventListener('change', () => { clearQuickFilter(); renderGrid(); });
+$('#statusFilter').addEventListener('change', () => { clearQuickFilter(); renderGrid(); });
 
 // ---------- Add / Edit form ----------
 function resetForm(){
